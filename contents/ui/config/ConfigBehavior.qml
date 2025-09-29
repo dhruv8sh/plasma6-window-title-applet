@@ -14,6 +14,7 @@ Kirigami.ScrollablePage {
     readonly property alias cfg_maxminAllowed: maxminAllowed.checked
     readonly property alias cfg_closeAllowed: closeAllowed.checked
     readonly property alias cfg_scrollAllowed: scrollAllowed.checked
+    readonly property alias cfg_dragMoveWindow: dragMoveWindow.checked
 
     Kirigami.FormLayout {
         Kirigami.Separator {
@@ -47,6 +48,10 @@ Kirigami.ScrollablePage {
         PC3.CheckBox{
             id: scrollAllowed
             Kirigami.FormData.label: i18n("Scroll through tasks:")
+        }
+        PC3.CheckBox{
+            id: dragMoveWindow
+            Kirigami.FormData.label: i18n("Drag move window:")
         }
     }
 }

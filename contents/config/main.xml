@@ -34,7 +34,8 @@
         <entry name="maxminAllowed"     type="Bool"><default>true</default></entry>
         <entry name="closeAllowed"      type="Bool"><default>true</default></entry>
         <entry name="scrollAllowed"     type="Bool"><default>true</default></entry>
-        </group>
+        <entry name="dragMoveWindow"    type="Bool"><default>true</default></entry>
+    </group>
 
     <group name="Substitutions">
         <entry name="subsMatchApp"      type="StringList"><default>"Telegram Desktop","Gimp-.*","soffice.bin","Spotify.*","Kate.*"</default></entry>
@@ -42,4 +43,3 @@
         <entry name="subsReplace"       type="StringList"><default>"Telegram","Gimp","LibreOffice","Spotify","Kate : %w"</default></entry>
         </group>
     </kcfg>
-
