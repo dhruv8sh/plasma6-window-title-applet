@@ -142,6 +142,10 @@ Item {
                 function toggleKeepAbove(){
                     tasksModel.requestToggleKeepAbove(modelIndex());
                 }
+
+                function requestMove() {
+                    tasksModel.requestMove(modelIndex())
+                }
             }
         }
     }
@@ -173,6 +177,12 @@ Item {
     function toggleKeepAbove(){
         if (activeTaskItem) {
             activeTaskItem.toggleKeepAbove();
+        }
+    }
+
+    function startSystemMove(){
+        if (activeTaskItem) {
+            activeTaskItem.requestMove();
         }
     }
 

@@ -7,7 +7,20 @@ MouseArea {
     id: actionsArea
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
     anchors.fill: parent
+    drag.target: parent
     property bool wheelIsBlocked: false
+    property bool dragActive: drag.active
+    
+    onDragActiveChanged: {
+        if(existsWindowActive && cfg.dragMoveWindow) {
+            if (drag.active) {
+                windowInfoLoader.item.startSystemMove();
+            } else {
+
+            }
+        }
+    }
+
     onClicked: function(event){
         if(existsWindowActive && event.button === Qt.MiddleButton && cfg.closeAllowed)
             windowInfoLoader.item.requestClose();
