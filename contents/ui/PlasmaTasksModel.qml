@@ -43,51 +43,57 @@ Item {
                 readonly property var m: model
 
                 function cleanupTitle() {
-                    var text = display;
-                    var t = modelDisplay;
-                    var sep = t.lastIndexOf(" —– ");
-                    var spacer = 4;
+                    var text = display || "";
+                    var t = modelDisplay || "";
 
-                    if (sep === -1) {
-                        sep = t.lastIndexOf(" -- ");
-                        spacer = 4;
-                    }
+                    // Set default values
+                    var dTitle = t.trim(); // Assume the display is the title
+                    var dAppName = ""; // App name derived from parsing
 
-                    if (sep === -1) {
-                        sep = t.lastIndexOf(" -- ");
-                        spacer = 4;
-                    }
+                    // Define the list of separators and their lengths
+                    var separators = [
+                        { sep: " —– ", len: 4 },
+                        { sep: " -- ", len: 4 },
+                        { sep: " — ", len: 3 },
+                        { sep: " - ", len: 3 }
+                    ];
 
-                    if (sep === -1) {
-                        sep = t.lastIndexOf(" — ");
-                        spacer = 3;
-                    }
+                    var sepIndex = -1;
+                    var sepLen = 0;
 
-                    if (sep === -1) {
-                        sep = t.lastIndexOf(" - ");
-                        spacer = 3;
-                    }
-
-                    var dTitle = "";
-                    var dAppName = "";
-
-                    if (sep>-1) {
-                        dTitle = text.substring(0, sep);
-                        discoveredAppName = text.substring(sep+spacer, text.length);
-
-                        //if title starts with application name, swap the found records
-                        if (dTitle.startsWith(modelAppName)) {
-                            var firstPart = dTitle;
-                            dTitle = discoveredAppName;
-                            discoveredAppName = firstPart;
+                    // Find the first matching separator in reverse order
+                    for (var i = 0; i < separators.length; i++) {
+                        var idx = t.lastIndexOf(separators[i].sep);
+                        if (idx > -1) {
+                            sepIndex = idx;
+                            sepLen = separators[i].len;
+                            break;
                         }
                     }
 
-                    if (sep>-1) {
-                        title = dTitle;
-                    } else {
-                        title = t;
+                    // Parse only if a valid separator is found
+                    if (sepIndex > -1) {
+                        dTitle = text.substring(0, sepIndex).trim(); // Extract title
+                        dAppName = text.substring(sepIndex + sepLen).trim(); // Extract app name
                     }
+
+                    // Edge Case: Chrome or other apps where the application name might be stripped
+                    // If the parsed app name is empty or incorrect, fallback to modelAppName
+                    if (!dAppName || dAppName === "") {
+                        dAppName = modelAppName || "";
+                    }
+
+                    // Handle cases where title starts with the application name
+                    if (dTitle.startsWith(dAppName)) {
+                        let firstPart = dTitle;
+                        dTitle = dAppName;
+                        dAppName = firstPart;
+                    }
+
+                    // Final fallback if everything fails
+                    dAppName = dAppName || modelAppName || "";
+                    title = dTitle || t || ""; // Use full display if no clean title found
+                    discoveredAppName = dAppName.trim();
                 }
 
                 onIsActiveChanged: {
